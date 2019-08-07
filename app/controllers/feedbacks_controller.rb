@@ -15,6 +15,7 @@ class FeedbacksController < ApplicationController
   # GET /feedbacks/new
   def new
     @feedback = Feedback.new
+    @feedbacks = Feedback.order created_at: :desc
   end
 
   # GET /feedbacks/1/edit
@@ -28,11 +29,10 @@ class FeedbacksController < ApplicationController
 
     respond_to do |format|
       if @feedback.save
-        format.html { redirect_to @feedback, notice: 'Feedback was successfully created.' }
-        format.json { render :show, status: :created, location: @feedback }
+        redirect_to new_feedback_path
       else
-        format.html { render :new }
-        format.json { render json: @feedback.errors, status: :unprocessable_entity }
+        @feedbacks = Feedback.order created_at: :desc
+        render :new
       end
     end
   end
